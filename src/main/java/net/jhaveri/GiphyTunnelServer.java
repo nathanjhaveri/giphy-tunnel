@@ -8,7 +8,6 @@ import java.net.Socket;
 
 public class GiphyTunnelServer {
     private ServerSocket server;
-    private static String GIPHY_API_IP = "151.101.54.2";
     private static int port = 8443;
 
     private static String GIPHY_HOST = "api.giphy.com";
@@ -49,28 +48,34 @@ public class GiphyTunnelServer {
     }
 
     private static class SocketPipe extends Thread {
+        private String name;
         private InputStream in;
         private OutputStream out;
-        private byte[] buff = new byte[1024];
+        private byte[] buff = new byte[1024 * 64];
 
         public SocketPipe(String name, InputStream in, OutputStream out) {
-            super(name);
+            super();
+            this.name = name;
             this.in = in;
             this.out = out;
         }
 
         @Override
         public void run() {
-            int len = 0;
-            while (len != -1) {
-                try {
-                    len = in.read(buff);
-                    System.out.println("read " + len + " from client");
+            try {
+                int transferCount = 0;
+                int len = in.read(buff);
+                while (len != -1) {
+                    //System.out.println("read " + len + " " + name);
                     out.write(buff, 0, len);
-                    System.out.println("write to giph");
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    len = in.read(buff);
+                    //System.out.println("write" + this.name);
+                    transferCount++;
                 }
+
+                System.out.println(name + " transfer count " + transferCount);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
