@@ -33,6 +33,7 @@ public class SocketPipe extends Thread {
 
             System.out.println(name + " transfer complete");
         } catch (IOException e) {
+            System.err.println(name + " " + e.getMessage());
             e.printStackTrace();
         }
     }

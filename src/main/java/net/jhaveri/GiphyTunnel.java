@@ -5,9 +5,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-public class GiphyTunnel extends Thread {
+public class GiphyTunnel implements Runnable {
     private final static String GIPHY_HOST = "api.giphy.com";
     private final static int GIPHY_PORT = 443;
+    private final static int MAX_TIMEOUT_MILLIS = 5000;
     private Socket clientSocket;
 
     public GiphyTunnel(Socket clientSocket) {
@@ -24,6 +25,8 @@ public class GiphyTunnel extends Thread {
                 InputStream giphyIn = giphySocket.getInputStream();
                 OutputStream giphyOut = giphySocket.getOutputStream();
         ) {
+            socket.setSoTimeout(MAX_TIMEOUT_MILLIS);
+            giphySocket.setSoTimeout(MAX_TIMEOUT_MILLIS);
             SocketPipe clientToGiphy = new SocketPipe("client->giphy", clientIn, giphyOut);
             SocketPipe giphyToClient = new SocketPipe("giphy->client", giphyIn, clientOut);
 
