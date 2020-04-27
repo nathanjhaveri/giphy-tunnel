@@ -24,8 +24,8 @@ public class GiphyTunnel extends Thread {
                 InputStream giphyIn = giphySocket.getInputStream();
                 OutputStream giphyOut = giphySocket.getOutputStream();
         ) {
-            SocketPipe clientToGiphy = new SocketPipe("client->giph", clientIn, giphyOut);
-            SocketPipe giphyToClient = new SocketPipe("giph->client", giphyIn, clientOut);
+            SocketPipe clientToGiphy = new SocketPipe("client->giphy", clientIn, giphyOut);
+            SocketPipe giphyToClient = new SocketPipe("giphy->client", giphyIn, clientOut);
 
             clientToGiphy.start();
             giphyToClient.start();
