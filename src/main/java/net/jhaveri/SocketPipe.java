@@ -5,10 +5,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class SocketPipe extends Thread {
+    public final static int BUFF_SIZE = 1024 * 64;
     private String name;
     private InputStream in;
     private OutputStream out;
-    private byte[] buff = new byte[1024 * 64];
+    private byte[] buff = new byte[BUFF_SIZE];
 
     public SocketPipe(String name, InputStream in, OutputStream out) {
         super();
@@ -19,6 +20,10 @@ public class SocketPipe extends Thread {
 
     @Override
     public void run() {
+        pipeInputToOutput();
+    }
+
+    public void pipeInputToOutput() {
         try {
             int len = in.read(buff);
             while (len != -1) {
