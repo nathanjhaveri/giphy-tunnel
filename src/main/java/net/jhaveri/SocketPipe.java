@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class SocketPipe extends Thread {
-    public final static int BUFF_SIZE = 1024 * 64;
+    public final static int BUFF_SIZE = 1024 * 64; // Experimentally more than enough room for a given read. Typical MTU is only 1500
     private String name;
     private InputStream in;
     private OutputStream out;
